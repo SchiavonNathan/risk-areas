@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",             // Versão do JavaScript que será gerada
+    "module": "commonjs",            // Sistema de módulos a ser usado
+    "rootDir": "./src",              // Pasta raiz dos seus arquivos .ts
+    "outDir": "./dist",              // Pasta para onde o JavaScript compilado irá
+    "esModuleInterop": true,         // Permite interoperabilidade entre módulos CommonJS e ES
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,                  // Habilita todas as checagens estritas de tipo
+    "skipLibCheck": true             // Pula a verificação de tipos dos arquivos de declaração
+  }
+}
