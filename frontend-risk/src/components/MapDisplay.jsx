@@ -1,5 +1,5 @@
-import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import React, { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 
 import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -22,7 +22,22 @@ function MapClickHandler({ onMapClick }) {
   return null; 
 }
 
-function MapDisplay({ areas, onMapClick, selectedPosition }) {
+function MapController({ flyToPosition }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (flyToPosition) {
+      map.flyTo(flyToPosition, 16, {
+        animate: true,
+        duration: 1.5 
+      });
+    }
+  }, [flyToPosition, map]); 
+
+  return null;
+}
+
+function MapDisplay({ areas, onMapClick, selectedPosition, flyToPosition }) {
   const initialPosition = [-23.4253, -51.9386];
 
   return (
@@ -48,6 +63,8 @@ function MapDisplay({ areas, onMapClick, selectedPosition }) {
           <Popup>Nova Área de Risco</Popup>
         </Marker>
       )}
+
+    <MapController flyToPosition={flyToPosition} />
     </MapContainer>
   );
 }

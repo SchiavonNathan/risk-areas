@@ -1,10 +1,7 @@
-// src/components/AlertasClimaticos.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './PainelClima.css';
 
-// Mapeamento de algumas cidades para código IBGE. Em uma app real, isso viria de um DB ou outra API.
 const CIDADES_IBGE = {
     // Sudeste
     'Belo Horizonte': '3106200',
@@ -51,11 +48,9 @@ const CIDADES_IBGE = {
 function PainelClima() {
   const [cidadeSelecionada, setCidadeSelecionada] = useState('Maringá');
   
-  // Estados para os alertas
   const [alertas, setAlertas] = useState([]);
   const [loadingAlertas, setLoadingAlertas] = useState(true);
 
-  // NOVO: Estados para a previsão do tempo
   const [previsao, setPrevisao] = useState(null);
   const [loadingPrevisao, setLoadingPrevisao] = useState(true);
 
@@ -63,17 +58,13 @@ function PainelClima() {
     const codigoIbge = CIDADES_IBGE[cidadeSelecionada];
     if (!codigoIbge) return;
 
-    // Reseta os estados ao trocar de cidade
     setLoadingAlertas(true);
     setLoadingPrevisao(true);
     
-    // Busca os alertas (código anterior)
     const fetchAlertas = axios.get(`http://localhost:8080/api/clima/alertas/${codigoIbge}`);
     
-    // NOVO: Busca a previsão do tempo
     const fetchPrevisao = axios.get(`http://localhost:8080/api/clima/previsao/${cidadeSelecionada}`);
 
-    // Executa as duas chamadas em paralelo para mais eficiência
     Promise.all([fetchAlertas, fetchPrevisao])
       .then(responses => {
         setAlertas(responses[0].data);
@@ -98,7 +89,6 @@ function PainelClima() {
         ))}
       </select>
       
-      {/* NOVO: Seção para Previsão Atual */}
       <div className="previsao-atual-container">
         {loadingPrevisao ? <p>Carregando previsão...</p> : previsao  && (
           <div className="previsao-grid">
@@ -117,7 +107,6 @@ function PainelClima() {
         )}
       </div>
 
-      {/* Seção para Alertas Climáticos (código anterior adaptado) */}
       <div className="alertas-container">
         <h4>Alertas Ativos</h4>
         {loadingAlertas ? <p>Carregando alertas...</p> : alertas.length > 0 ? (

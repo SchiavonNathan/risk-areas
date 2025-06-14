@@ -1,20 +1,18 @@
-// src/App.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MapDisplay from './components/MapDisplay';
 import AddAreaForm from './components/AddAreaForm';
 import './App.css';
 import PainelClima from './components/PainelClima';
+import ListaAreasRisco from './components/ListaAreasRisco';
 
 function App() {
   const [areas, setAreas] = useState([]);
   const [selectedPosition, setSelectedPosition] = useState(null);
   
-  // NOVO: Estado para armazenar o termo da busca
   const [searchTerm, setSearchTerm] = useState('');
+  const [focusedArea, setFocusedArea] = useState(null);
 
-  // A função fetchAreas continua a mesma
   const fetchAreas = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/areas-risco');
@@ -35,11 +33,9 @@ function App() {
 
   const handleMapClick = (latlng) => {
     setSelectedPosition(latlng);
+    setFocusedArea(null); 
   };
 
-  // ATUALIZADO: Lógica de filtragem
-  // Filtra as áreas com base no searchTerm antes de passar para o componente do mapa.
-  // A filtragem é case-insensitive (não diferencia maiúsculas de minúsculas).
   const filteredAreas = areas.filter(area =>
     area.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (area.descricao && area.descricao.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -50,7 +46,6 @@ function App() {
       <div className="sidebar">
         <h1>Monitor de Áreas de Risco</h1>
 
-        {/* NOVO: Campo de input para a busca */}
         <div className="search-container">
           <input
             type="text"
@@ -63,17 +58,22 @@ function App() {
 
         <PainelClima />
 
+        <ListaAreasRisco 
+          areas={filteredAreas} 
+          onAreaSelect={setFocusedArea} 
+        />
+
         <AddAreaForm 
           onAreaAdded={handleAreaAdded} 
           selectedPosition={selectedPosition} 
         />
       </div>
       <div className="map-container">
-        {/* ATUALIZADO: Passa a lista JÁ FILTRADA para o MapDisplay */}
         <MapDisplay 
           areas={filteredAreas} 
           onMapClick={handleMapClick}
           selectedPosition={selectedPosition}
+          flyToPosition={focusedArea ? [focusedArea.latitude, focusedArea.longitude] : null}
         />
       </div>
     </div>

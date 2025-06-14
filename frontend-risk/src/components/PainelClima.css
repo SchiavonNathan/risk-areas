@@ -1,6 +1,4 @@
-/* src/components/PainelClima.css */
 
-/* --- ESTRUTURA PRINCIPAL DO PAINEL --- */
 .painel-clima-container {
   margin-top: 25px;
   padding-top: 20px;
@@ -21,9 +19,8 @@
   font-size: 1rem;
 }
 
-/* --- SEÇÃO DA PREVISÃO ATUAL --- */
 .previsao-atual-container {
-  background-color: #f0f8ff; /* AliceBlue */
+  background-color: #f0f8ff;
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 25px;
@@ -34,7 +31,7 @@
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto auto;
   align-items: center;
-  gap: 0 15px; /* 0 de gap vertical, 15px de gap horizontal */
+  gap: 0 15px; 
   grid-template-areas:
     "icon temp"
     "icon condition"
@@ -57,7 +54,7 @@
 .condicao {
   grid-area: condition;
   text-transform: capitalize;
-  margin-top: -10px; /* Puxa um pouco para cima */
+  margin-top: -10px;
   color: #333;
 }
 
@@ -72,8 +69,6 @@
   margin-right: 15px;
 }
 
-
-/* --- SEÇÃO DOS ALERTAS CLIMÁTICOS --- */
 .alertas-container {
   margin-top: 15px;
 }
@@ -113,18 +108,17 @@
   color: #d32f2f;
 }
 
-/* Cores baseadas na severidade do INMET */
 .severidade-perigo-potencial {
   background-color: #fffde7;
-  border-left-color: #fdd835; /* Amarelo */
+  border-left-color: #fdd835;
 }
 
 .severidade-perigo {
   background-color: #fff3e0;
-  border-left-color: #fb8c00; /* Laranja */
+  border-left-color: #fb8c00;
 }
 
 .severidade-grande-perigo {
   background-color: #ffebee;
-  border-left-color: #d32f2f; /* Vermelho */
+  border-left-color: #d32f2f; 
 }
