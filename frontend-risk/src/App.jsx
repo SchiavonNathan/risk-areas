@@ -27,7 +27,7 @@ export default function App() {
     <div className="flex h-screen overflow-hidden">
       <aside className="w-80 h-screen p-6 bg-dark/90 backdrop-blur-lg shadow-xl flex flex-col overflow-y-auto">
         <h1 className="text-3xl font-bold text-coral mb-6 flex items-center gap-2 flex-shrink-0">
-          <FontAwesomeIcon icon="map-marker-alt" /> Nossa Feirinha dos Riscos
+          <FontAwesomeIcon icon="map-marker-alt" />Areas de Risco
         </h1>
 
         <div className="relative mb-6 flex-shrink-0">
