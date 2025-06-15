@@ -22,6 +22,9 @@ Uma aplicação web moderna para monitoramento, identificação e gerenciamento 
 
 ---
 
+![Tela de Mapa Interativo](./public/riskprint.png)
+
+
 ## 🔍 Visão Geral
 
 O **Monitor de Áreas de Risco** é uma solução completa para identificação, registro e acompanhamento de regiões com potencial de riscos ambientais, estruturais, de inundação e outros. A plataforma permite o gerenciamento geográfico dessas áreas com visualização em mapa interativo, além de fornecer dados climáticos relevantes para análise de riscos.
