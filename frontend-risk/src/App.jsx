@@ -1,83 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import MapDisplay from './components/MapDisplay';
-import AddAreaForm from './components/AddAreaForm';
-import './App.css';
-import PainelClima from './components/PainelClima';
-import ListaAreasRisco from './components/ListaAreasRisco';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import MapDisplay from './components/MapDisplay'
+import AddAreaForm from './components/AddAreaForm'
+import ListaAreasRisco from './components/ListaAreasRisco'
+import PainelClima from './components/PainelClima'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function App() {
-  const [areas, setAreas] = useState([]);
-  const [selectedPosition, setSelectedPosition] = useState(null);
-  
-  const [searchTerm, setSearchTerm] = useState('');
-  const [focusedArea, setFocusedArea] = useState(null);
-
-  const fetchAreas = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/api/areas-risco');
-      setAreas(response.data);
-    } catch (error) {
-      console.error("Erro ao buscar áreas de risco:", error);
-    }
-  };
+export default function App() {
+  const [areas, setAreas] = useState([])
+  const [selectedPosition, setSelectedPosition] = useState(null)
+  const [focusedArea, setFocusedArea] = useState(null)
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    fetchAreas();
-  }, []);
+    axios.get('http://localhost:8080/api/areas-risco')
+      .then(r => setAreas(r.data))
+      .catch(console.error)
+  }, [])
 
-  const handleAreaAdded = (novaArea) => {
-    setAreas(prevAreas => [...prevAreas, novaArea]);
-    setSelectedPosition(null);
-  };
-
-  const handleMapClick = (latlng) => {
-    setSelectedPosition(latlng);
-    setFocusedArea(null); 
-  };
-
-  const filteredAreas = areas.filter(area =>
-    area.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (area.descricao && area.descricao.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filtered = areas.filter(a =>
+    a.nome.toLowerCase().includes(searchTerm) ||
+    (a.descricao && a.descricao.toLowerCase().includes(searchTerm))
+  )
 
   return (
-    <div className="App">
-      <div className="sidebar">
-        <h1>Monitor de Áreas de Risco</h1>
+    <div className="flex h-screen overflow-hidden">
+      <aside className="w-80 h-screen p-6 bg-dark/90 backdrop-blur-lg shadow-xl flex flex-col overflow-y-auto">
+        <h1 className="text-3xl font-bold text-coral mb-6 flex items-center gap-2 flex-shrink-0">
+          <FontAwesomeIcon icon="map-marker-alt" /> Nossa Feirinha dos Riscos
+        </h1>
 
-        <div className="search-container">
+        <div className="relative mb-6 flex-shrink-0">
           <input
             type="text"
-            placeholder="Buscar por nome ou descrição..."
+            placeholder="Buscar..."
+            className="w-full px-4 py-2 rounded-lg bg-slate text-light focus:ring-2 focus:ring-coral"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+          <FontAwesomeIcon
+            icon="search"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-light/70"
           />
         </div>
 
-        <PainelClima />
+        <div className="flex-1 flex flex-col gap-6">
+          <PainelClima />
+          <ListaAreasRisco areas={filtered} onAreaSelect={setFocusedArea} />
+          <AddAreaForm
+            onAreaAdded={a => setAreas([...areas, a])}
+            selectedPosition={selectedPosition}
+          />
+        </div>
+      </aside>
 
-        <ListaAreasRisco 
-          areas={filteredAreas} 
-          onAreaSelect={setFocusedArea} 
-        />
-
-        <AddAreaForm 
-          onAreaAdded={handleAreaAdded} 
-          selectedPosition={selectedPosition} 
-        />
-      </div>
-      <div className="map-container">
-        <MapDisplay 
-          areas={filteredAreas} 
-          onMapClick={handleMapClick}
+      <main className="flex-1">
+        <MapDisplay
+          areas={filtered}
+          onMapClick={setSelectedPosition}
           selectedPosition={selectedPosition}
-          flyToPosition={focusedArea ? [focusedArea.latitude, focusedArea.longitude] : null}
+          flyToPosition={
+            focusedArea && [focusedArea.latitude, focusedArea.longitude]
+          }
         />
-      </div>
+      </main>
     </div>
-  );
+  )
 }
-
-export default App;

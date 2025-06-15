@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function AddAreaForm({ onAreaAdded, selectedPosition }) {
   const [nome, setNome] = useState('');
@@ -39,17 +40,48 @@ function AddAreaForm({ onAreaAdded, selectedPosition }) {
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <h3>Adicionar Nova Área de Risco</h3>
-      <p style={{fontSize: '0.8rem', color: '#666'}}>Clique no mapa para preencher a Latitude e Longitude.</p>
-      <input type="text" value={nome} onChange={e => setNome(e.target.value)} placeholder="Nome da Área" required />
-      <input type="text" value={descricao} onChange={e => setDescricao(e.target.value)} placeholder="Descrição" />
-      <input type="number" step="any" value={latitude} onChange={e => setLatitude(e.target.value)} placeholder="Latitude" required />
-      <input type="number" step="any" value={longitude} onChange={e => setLongitude(e.target.value)} placeholder="Longitude" required />
-      <button type="submit">Adicionar Área</button>
+ return (
+    <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+      <h3 className="text-2xl font-semibold text-coral flex items-center gap-2">
+        <FontAwesomeIcon icon="plus" /> Nova Área de Risco
+      </h3>
+      <input
+        type="text"
+        placeholder="Nome da Área"
+        className="w-full px-4 py-2 bg-slate text-light rounded-lg focus:ring-2 focus:ring-coral"
+        value={nome}
+        onChange={e => setNome(e.target.value)}
+      />
+      <textarea
+        placeholder="Descrição (opcional)"
+        className="w-full px-4 py-2 bg-slate text-light rounded-lg focus:ring-2 focus:ring-coral"
+        value={descricao}
+        onChange={e => setDescricao(e.target.value)}
+      />
+      <div className="grid grid-cols-2 gap-4">
+        <input
+          type="number" step="any"
+          placeholder="Latitude"
+          className="px-4 py-2 bg-slate text-light rounded-lg focus:ring-2 focus:ring-coral"
+          value={latitude}
+          onChange={e => setLatitude(e.target.value)}
+        />
+        <input
+          type="number" step="any"
+          placeholder="Longitude"
+          className="px-4 py-2 bg-slate text-light rounded-lg focus:ring-2 focus:ring-coral"
+          value={longitude}
+          onChange={e => setLongitude(e.target.value)}
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full py-3 bg-coral font-bold rounded-lg hover:bg-dusty transition"
+      >
+        Adicionar
+      </button>
     </form>
-  );
+  )
 }
 
 export default AddAreaForm;
